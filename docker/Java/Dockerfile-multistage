@@ -1,0 +1,18 @@
+
+FROM amazoncorretto:17-alpine AS builder
+
+WORKDIR /app
+
+COPY Greeter.java .
+
+RUN javac Greeter.java
+
+FROM builder
+
+WORKDIR /app
+
+COPY --from=builder /app/Greeter.class /app
+
+ENTRYPOINT ["java","Greeter"]
+
+CMD ["Goodmoring","Java lovers"]
