@@ -47,3 +47,46 @@ public class ThenApplyExample {
     }
 }
 ```
+
+`thenCompose`
+
+> Chains two dependent asynchronous tasks. The second task takes the result of the first as input.
+
+- **Use Case**: When one asynchronous computation depends on the result of another.
+
+``` java
+import java.util.concurrent.CompletableFuture;
+
+public class ThenComposeExample {
+    public static void main(String[] args) {
+        CompletableFuture.supplyAsync(() -> "UserID123")
+                .thenCompose(userId -> fetchUserDetails(userId))
+                .thenAccept(details -> System.out.println("User Details: " + details));
+    }
+
+    private static CompletableFuture<String> fetchUserDetails(String userId) {
+        return CompletableFuture.supplyAsync(() -> "Details for " + userId);
+    }
+}
+``` 
+
+`thenCombine`
+
+> Combines two independent CompletableFuture results into one.
+
+- **Use Case** : When two computations are independent but you need both results.
+
+``` java
+import java.util.concurrent.CompletableFuture;
+
+public class ThenCombineExample {
+    public static void main(String[] args) {
+        CompletableFuture<String> future1 = CompletableFuture.supplyAsync(() -> "Hello");
+        CompletableFuture<String> future2 = CompletableFuture.supplyAsync(() -> "World!");
+
+        future1.thenCombine(future2, (result1, result2) -> result1 + " " + result2)
+                .thenAccept(combinedResult -> System.out.println("Combined: " + combinedResult));
+    }
+}
+``` 
+
